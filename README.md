@@ -6,6 +6,29 @@ Inspired by [Andrej Karpathy's LLM Wiki idea](https://gist.github.com/karpathy/4
 
 ---
 
+## 功能
+
+**数据采集**
+- Gmail：全量邮件同步，增量更新，自动去重
+- Google Docs：同步最近修改的文档
+- Chrome 浏览记录：读取本地 History 文件，可自动抓取正文
+- ChatGPT / Claude.ai：浏览器扩展实时捕获对话
+
+**LLM 摄取引擎**
+- 自动分类（申请邮件、新闻简报、会议邀约、AI 对话、通用内容等）
+- 按主题聚类，生成结构化 Markdown wiki 页面
+- 支持 Claude、OpenAI GPT-4o、本地 Ollama 三种 LLM，可随时切换
+- Ollama 时段调度：可设置只在夜间低占用时段运行，白天自动排队
+- 实时进度条，显示当前处理条目和使用模型
+
+**Wiki 与搜索**
+- 生成 Obsidian 兼容的 Markdown 文件，含 YAML frontmatter
+- 每条内容附原始来源链接（Gmail 线程、ChatGPT 对话、Chrome 页面等）
+- 本地全文搜索（SQLite FTS5），支持中文分词
+- 搜索结果由 LLM 合成自然语言答案，并标注来源
+
+---
+
 ## 安装
 
 **依赖：** Python 3.10+、Node.js 18+、Chrome
