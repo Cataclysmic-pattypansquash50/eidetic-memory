@@ -147,12 +147,12 @@ CREATE TABLE items (
 ```json
 {
   "type": "application_internship",
-  "applicant": "吕晟",
-  "institution": "港大",
+  "applicant": "张某某",
+  "institution": "某大学",
   "degree": "PhD在读",
   "research_areas": ["多模态", "声学", "感知", "空间智能"],
   "duration": "6个月",
-  "email": "lusheng@hku.hk",
+  "email": "applicant@university.edu",
   "source_url": "https://mail.google.com/mail/u/0/#inbox/18e4f..."
 }
 ```
@@ -198,7 +198,7 @@ tags: [people, applications]
 ```markdown
 | 姓名 | 学校 | 类型 | 研究方向 | 时长 | 原始邮件 |
 |------|------|------|----------|------|----------|
-| 吕晟 | 港大 | PhD在读 | 多模态/声学/感知/空间智能 | 6个月 | [📧](gmail链接) |
+| 张某某 | 某大学 | PhD在读 | 多模态/声学/感知/空间智能 | 6个月 | [📧](gmail链接) |
 ```
 
 ---
@@ -233,13 +233,13 @@ tags: [people, applications]
 ```
 找到 3 位申请者（来自 Gmail）
 
-吕晟 · 港大 · PhD在读
+张某某 · 某大学 · PhD在读
 多模态 / 声学 / 感知 / 空间智能 · 6个月
-📧 lusheng@hku.hk  →  [原始邮件](gmail链接)
+📧 applicant@university.edu  →  [原始邮件](gmail链接)
 
-张三 · 清华 · 本科
+李某某 · 某高校 · 本科
 CV / NLP · 3个月
-📧 zhangsan@tsinghua.edu  →  [原始邮件](gmail链接)
+📧 another@school.edu  →  [原始邮件](gmail链接)
 
 来源: wiki/people/applicants.md · 最后更新 2026-04-06
 ```
