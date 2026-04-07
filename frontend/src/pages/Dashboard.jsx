@@ -83,12 +83,10 @@ export default function Dashboard() {
               : "开始摄取"}
           </button>
         </div>
-        {status?.running && (
-          <div className="flex items-center gap-2 text-sm text-indigo-400">
-            <div className="w-2 h-2 bg-indigo-400 rounded-full animate-pulse" />
-            LLM 正在处理中，请稍候...
-          </div>
-        )}
+
+        {/* Progress bar */}
+        {status?.running && <IngestProgress status={status} />}
+
         {status?.scheduled && (
           <div className="mt-3 text-sm text-amber-300">
             已排队，计划在{" "}
@@ -141,6 +139,58 @@ function Stat({ label, value }) {
     <div className="text-center">
       <p className="text-2xl font-bold">{value}</p>
       <p className="text-xs text-gray-400">{label}</p>
+    </div>
+  );
+}
+
+function IngestProgress({ status }) {
+  const { total, processed, current } = status?.progress || {};
+  const pct = total > 0 ? Math.round((processed / total) * 100) : 0;
+  const model = status?.model_label || status?.llm_provider || "LLM";
+
+  const providerColor = {
+    claude: "text-orange-400 bg-orange-400/10 border-orange-400/20",
+    openai: "text-green-400 bg-green-400/10 border-green-400/20",
+    ollama: "text-purple-400 bg-purple-400/10 border-purple-400/20",
+  }[status?.llm_provider] || "text-indigo-400 bg-indigo-400/10 border-indigo-400/20";
+
+  return (
+    <div className="mt-2 space-y-2">
+      {/* Model badge + counter */}
+      <div className="flex items-center justify-between text-xs">
+        <div className="flex items-center gap-2">
+          <div className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
+          <span className="text-gray-400">LLM 处理中</span>
+          <span className={`px-2 py-0.5 rounded border text-xs font-mono ${providerColor}`}>
+            {model}
+          </span>
+        </div>
+        {total > 0 && (
+          <span className="text-gray-400 font-mono">
+            {processed} / {total}
+          </span>
+        )}
+      </div>
+
+      {/* Progress bar */}
+      <div className="w-full bg-gray-800 rounded-full h-1.5 overflow-hidden">
+        {total > 0 ? (
+          <div
+            className="h-1.5 rounded-full bg-indigo-500 transition-all duration-500"
+            style={{ width: `${pct}%` }}
+          />
+        ) : (
+          /* indeterminate stripe when total not yet known */
+          <div className="h-1.5 rounded-full bg-indigo-500/60 animate-pulse w-1/3" />
+        )}
+      </div>
+
+      {/* Current item */}
+      {current && (
+        <p className="text-xs text-gray-500 truncate">
+          正在处理：{current}
+        </p>
+      )}
     </div>
   );
 }

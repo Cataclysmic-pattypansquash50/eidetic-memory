@@ -13,6 +13,7 @@ _running = False
 _scheduled = False
 _scheduled_for: str | None = None
 _last_report: dict = {}
+_progress: dict = {"total": 0, "processed": 0, "current": ""}
 
 
 @router.post("/start")
@@ -45,21 +46,38 @@ def ingest_status():
         "pending_by_source": {s: v["pending"] for s, v in stats.items()},
         "total_by_source": {s: v["total"] for s, v in stats.items()},
         "llm_provider": settings.llm_provider,
+        "model_label": _model_label(),
+        "progress": _progress,
         "ollama_schedule_enabled": settings.ollama_schedule_enabled,
         "ollama_schedule_start": settings.ollama_schedule_start,
         "ollama_schedule_end": settings.ollama_schedule_end,
     }
 
 
+def _model_label() -> str:
+    if settings.llm_provider == "openai":
+        return "GPT-4o"
+    if settings.llm_provider == "ollama":
+        return settings.ollama_model
+    return "Claude Sonnet 4.6"
+
+
 async def _run(source: Optional[str]):
-    global _running, _last_report
+    global _running, _last_report, _progress
     _running = True
+    _progress = {"total": 0, "processed": 0, "current": ""}
     try:
-        _last_report = await run_ingest(source=source)
+        _last_report = await run_ingest(source=source, on_progress=_on_progress)
     except Exception as e:
         _last_report = {"error": str(e)}
     finally:
         _running = False
+        _progress = {"total": 0, "processed": 0, "current": ""}
+
+
+def _on_progress(processed: int, total: int, current: str):
+    global _progress
+    _progress = {"total": total, "processed": processed, "current": current}
 
 
 async def _run_when_allowed(source: Optional[str], scheduled_at: datetime):

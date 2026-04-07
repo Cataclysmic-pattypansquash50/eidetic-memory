@@ -50,6 +50,9 @@ def _init_schema(conn: sqlite3.Connection):
         CREATE INDEX IF NOT EXISTS idx_source ON items(source);
         CREATE INDEX IF NOT EXISTS idx_ingested ON items(ingested);
         CREATE INDEX IF NOT EXISTS idx_timestamp ON items(timestamp);
+        CREATE INDEX IF NOT EXISTS idx_message_id
+            ON items(json_extract(metadata, '$.message_id'))
+            WHERE source = 'gmail';
 
         CREATE TABLE IF NOT EXISTS sync_state (
             connector   TEXT PRIMARY KEY,

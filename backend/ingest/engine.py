@@ -3,7 +3,7 @@ Ingest engine: orchestrates classify → cluster → wiki write for pending item
 """
 
 from __future__ import annotations
-from typing import Optional
+from typing import Optional, Callable
 import asyncio
 from datetime import datetime
 from collections import defaultdict
@@ -23,7 +23,10 @@ from backend.ingest.wiki_writer import (
 APPLICATION_TYPES = {"application_phd", "application_internship"}
 
 
-async def run_ingest(source: Optional[str] = None) -> dict:
+async def run_ingest(
+    source: Optional[str] = None,
+    on_progress: Optional[Callable[[int, int, str], None]] = None,
+) -> dict:
     """
     Main entry point. Processes all pending items.
     Returns a report dict.
@@ -42,7 +45,10 @@ async def run_ingest(source: Optional[str] = None) -> dict:
     # Step 1: classify & extract all items
     classified = []
     skipped_ids = []
-    for item in items:
+    total = len(items)
+    for idx, item in enumerate(items):
+        if on_progress:
+            on_progress(idx, total, item.title[:60])
         result = await classify_and_extract(item)
         item_type = result.get("type", "general")
         extracted = result.get("extracted", {})
@@ -69,26 +75,25 @@ async def run_ingest(source: Optional[str] = None) -> dict:
             else:
                 by_topic["general"].append((item, ext))
 
-    # Step 3: write wiki pages
+    # Step 3: write wiki pages — mark each batch immediately after writing
+    # so a mid-run crash doesn't re-process already-written items.
     pages_written = []
-    ingested_ids = []
+
+    if skipped_ids:
+        mark_ingested(conn, skipped_ids)
 
     if applications:
         path = await write_applicants_page(applications)
         pages_written.append(path)
-        ingested_ids.extend(item.id for item, _ in applications)
+        mark_ingested(conn, [item.id for item, _ in applications])
         print(f"[ingest] wrote applicants page ({len(applications)} entries)")
 
     for topic, topic_items in by_topic.items():
         path = await write_topic_page(topic, topic_items)
         pages_written.append(path)
-        ingested_ids.extend(item.id for item, _ in topic_items)
+        # Deduplicate IDs (item may appear in multiple topics)
+        mark_ingested(conn, list({item.id for item, _ in topic_items}))
         print(f"[ingest] wrote topic '{topic}' ({len(topic_items)} items)")
-
-    # Step 4: mark ingested + skipped
-    all_done = ingested_ids + skipped_ids
-    if all_done:
-        mark_ingested(conn, all_done)
 
     # Step 5: update log and wiki index
     now = datetime.now().strftime("%Y-%m-%d %H:%M")
