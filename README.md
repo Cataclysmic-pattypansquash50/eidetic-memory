@@ -6,6 +6,18 @@ Inspired by [Andrej Karpathy's LLM Wiki idea](https://gist.github.com/karpathy/4
 
 ---
 
+## 截图
+
+| Dashboard | 搜索 |
+|-----------|------|
+| ![Dashboard](docs/dashboard.png) | ![Search](docs/search.png) |
+
+| 数据源 | 设置 |
+|--------|------|
+| ![数据源](docs/datasource.png) | ![设置](docs/setting.png) |
+
+---
+
 ## 功能
 
 **数据采集**
