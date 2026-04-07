@@ -54,8 +54,16 @@ class GmailConnector(Connector):
         return False
 
     def is_authenticated(self) -> bool:
-        self._load_creds()
-        return self._creds is not None and self._creds.valid
+        # Fast path: just check token file has a refresh_token.
+        # Avoids blocking network call (token refresh) on startup status check.
+        if not TOKEN_PATH.exists():
+            return False
+        try:
+            import json
+            data = json.loads(TOKEN_PATH.read_text())
+            return bool(data.get("refresh_token"))
+        except Exception:
+            return False
 
     # ── fetch ──────────────────────────────────────────────────────────────
 

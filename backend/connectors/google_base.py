@@ -50,8 +50,17 @@ class GoogleOAuthConnector(Connector):
         return False  # auth happens via web OAuth flow
 
     def is_authenticated(self) -> bool:
-        self._load_creds()
-        return self._creds is not None and self._creds.valid
+        # Fast path: just check the token file has a refresh_token.
+        # Avoids making a network call (token refresh) on every startup check.
+        # Actual credential refresh happens lazily inside fetch_new_items.
+        if not self.token_path.exists():
+            return False
+        try:
+            import json
+            data = json.loads(self.token_path.read_text())
+            return bool(data.get("refresh_token"))
+        except Exception:
+            return False
 
     # ── private helpers ────────────────────────────────────────────────────
 
