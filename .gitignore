@@ -10,3 +10,8 @@ frontend/dist/
 
 __pycache__/
 *.pyc
+
+# Wiki generated content (personal, not for repo)
+wiki/**/*.md
+wiki/index.md
+wiki/log.md
