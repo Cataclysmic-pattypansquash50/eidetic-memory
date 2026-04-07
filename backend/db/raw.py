@@ -50,7 +50,6 @@ def _init_schema(conn: sqlite3.Connection):
         CREATE INDEX IF NOT EXISTS idx_source ON items(source);
         CREATE INDEX IF NOT EXISTS idx_ingested ON items(ingested);
         CREATE INDEX IF NOT EXISTS idx_timestamp ON items(timestamp);
-        CREATE UNIQUE INDEX IF NOT EXISTS idx_source_url ON items(source, source_url);
 
         CREATE TABLE IF NOT EXISTS sync_state (
             connector   TEXT PRIMARY KEY,
@@ -58,6 +57,13 @@ def _init_schema(conn: sqlite3.Connection):
             extra       TEXT NOT NULL DEFAULT '{}'
         );
     """)
+    # Preserve connector-specific duplicate semantics:
+    # Gmail allows multiple message_ids for the same thread URL, and
+    # Google Docs allows multiple modified revisions for the same doc URL.
+    conn.execute("DROP INDEX IF EXISTS idx_source_url")
+    conn.execute(
+        "CREATE INDEX IF NOT EXISTS idx_source_url_lookup ON items(source, source_url)"
+    )
     conn.commit()
 
 
