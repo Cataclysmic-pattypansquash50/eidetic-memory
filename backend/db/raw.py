@@ -50,6 +50,7 @@ def _init_schema(conn: sqlite3.Connection):
         CREATE INDEX IF NOT EXISTS idx_source ON items(source);
         CREATE INDEX IF NOT EXISTS idx_ingested ON items(ingested);
         CREATE INDEX IF NOT EXISTS idx_timestamp ON items(timestamp);
+        CREATE UNIQUE INDEX IF NOT EXISTS idx_source_url ON items(source, source_url);
 
         CREATE TABLE IF NOT EXISTS sync_state (
             connector   TEXT PRIMARY KEY,

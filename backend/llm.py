@@ -93,7 +93,13 @@ class _OllamaClient:
         )
         resp.raise_for_status()
         data = resp.json()
-        return data.get("message", {}).get("content", "").strip()
+        msg = data.get("message", {})
+        content = msg.get("content", "").strip()
+        # gemma4 and other thinking models sometimes put the actual reply
+        # in the `thinking` field only, leaving `content` empty on short prompts.
+        if not content:
+            content = msg.get("thinking", "").strip()
+        return content
 
 
 _client = None
